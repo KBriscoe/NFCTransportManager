@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import java.sql.*;
 
 public class MainActivity extends AppCompatActivity {
-    private Button loginButton;
+    private String passID;
+    Button loginButton;
+    EditText username;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,12 +23,21 @@ public class MainActivity extends AppCompatActivity {
 
     private void initialize() {
         loginButton = findViewById(R.id.loginButton);
+        username = (EditText)findViewById(R.id.usernameField);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //NEED TO VALIDATE USERNAME PASSWORD HERE!!!
 
+                //Assign correct PassID based on username here
+                passID = username.getText().toString();
+                int IDLength = passID.length();
+                String sendingID = passID;
                 Intent intent = new Intent(MainActivity.this, ScanActivity.class);
+                intent.putExtra("ID", sendingID);
+                intent.putExtra("ID Length", IDLength);
                 startActivity(intent);
+
             }
         });
     }
