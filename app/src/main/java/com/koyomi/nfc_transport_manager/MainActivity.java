@@ -23,7 +23,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     private String passID;
     EditText password;
-    EditText username;
+    EditText email;
     Button loginButton;
     Button signupButton;
     Context context = this;
@@ -37,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        username = findViewById(R.id.usernameField);
-        username = findViewById(R.id.usernameField);
+        email = findViewById(R.id.emailField);
+        email = findViewById(R.id.emailField);
         password = findViewById(R.id.passwordField);
 
         loginButton = findViewById(R.id.loginButton);
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             if (result.getInt("status") == 200) {
                                 //Assign correct PassID based on username here
-                                passID = username.getText().toString();
+                                passID = email.getText().toString();
                                 int IDLength = passID.length();
                                 String sendingID = passID;
                                 Intent intent = new Intent(MainActivity.this, ScanActivity.class);
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                             System.out.println(ex.toString());
                         }
                     }
-                },username.getText().toString(), password.getText
+                },email.getText().toString(), password.getText
                         ().toString(), "login");
             }
         });
@@ -78,14 +78,14 @@ public class MainActivity extends AppCompatActivity {
                     public void onSuccess(JSONObject result) {
 
                     }
-                },username.getText().toString(), password.getText
+                },email.getText().toString(), password.getText
                         ().toString(), "signup");
             }
         });
     }
 
     public void makeRequest(final VolleyCallback callback, String... args) {
-        final String username = args[0];
+        final String email = args[0];
         final String password = args[1];
         final String login = args[2];
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -113,12 +113,12 @@ public class MainActivity extends AppCompatActivity {
         ) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String>  params = new HashMap<>();
-                params.put("username", username);
-                params.put("password", password);
-                params.put("login", login);
+                    Map<String, String>  params = new HashMap<>();
+                    params.put("email", email);
+                    params.put("password", password);
+                    params.put("login", login);
 
-                return params;
+                    return params;
             }
         };
         queue.add(postRequest);
