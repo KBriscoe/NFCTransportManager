@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     Button signupButton;
     Context context = this;
 
-  final static String URL = "http://10.0.2.2/test_android/index.php";
+  final static String URL = "http://34.239.52.7/index.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
