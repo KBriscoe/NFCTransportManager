@@ -1,6 +1,7 @@
 package com.koyomi.nfc_transport_manager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,46 +19,64 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+
+import java.sql.*;
 
 public class MainActivity extends AppCompatActivity {
-
-  EditText passwordField;
-  EditText usernameField;
-  Button loginButton;
-  Button signupButton;
-  Context context = this;
+    private String passID;
+    EditText username;
+    EditText password;
+    EditText username;
+    Button loginButton;
+    Button signupButton;
+    Context context = this;
 
   final static String URL = "http://10.0.2.2/test_android/index.php";
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        initialize();
+    }
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+    private void initialize() {
+        username = findViewById(R.id.usernameField);
+        username = findViewById(R.id.usernameField);
+        password = findViewById(R.id.passwordField);
 
-    usernameField = findViewById(R.id.usernameField);
-    passwordField = findViewById(R.id.passwordField);
+        loginButton = findViewById(R.id.loginButton);
+        signupButton = findViewById(R.id.signupButton);
 
-    loginButton = findViewById(R.id.loginButton);
-    signupButton = findViewById(R.id.signupButton);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                makeRequest(username.getText().toString(), password.getText
+                  ().toString(), "login");
 
-    loginButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        makeRequest(usernameField.getText().toString(), passwordField.getText
-            ().toString(), "login");
-      }
-    });
+                //Assign correct PassID based on username here
+                passID = username.getText().toString();
+                int IDLength = passID.length();
+                String sendingID = passID;
+                Intent intent = new Intent(MainActivity.this, ScanActivity.class);
+                intent.putExtra("ID", sendingID);
+                intent.putExtra("ID Length", IDLength);
+                startActivity(intent);
 
-    signupButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        makeRequest(usernameField.getText().toString(), passwordField.getText
-            ().toString(), "signup");
-      }
-    });
+            }
+        });
 
-
-  }
+      signupButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+          makeRequest(username.getText().toString(), password.getText
+              ().toString(), "signup");
+        }
+      });
+    }
 
   public void makeRequest(String... args) {
     final String username = args[0];
