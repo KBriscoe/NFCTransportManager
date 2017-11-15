@@ -19,16 +19,9 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-
-import java.sql.*;
 
 public class MainActivity extends AppCompatActivity {
     private String passID;
-    EditText username;
     EditText password;
     EditText username;
     Button loginButton;
@@ -54,31 +47,44 @@ public class MainActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                makeRequest(username.getText().toString(), password.getText
+                makeRequest(new VolleyCallback(){
+                  @Override
+                  public void onSuccess(JSONObject result) {
+                    try {
+                      if (result.getInt("status") == 200) {
+                        //Assign correct PassID based on username here
+                        passID = username.getText().toString();
+                        int IDLength = passID.length();
+                        String sendingID = passID;
+                        Intent intent = new Intent(MainActivity.this, ScanActivity.class);
+                        intent.putExtra("ID", sendingID);
+                        intent.putExtra("ID Length", IDLength);
+                        startActivity(intent);
+                      }
+                    } catch (Exception ex) {
+                      System.out.println(ex.toString());
+                    }
+                  }
+                },username.getText().toString(), password.getText
                   ().toString(), "login");
-
-                //Assign correct PassID based on username here
-                passID = username.getText().toString();
-                int IDLength = passID.length();
-                String sendingID = passID;
-                Intent intent = new Intent(MainActivity.this, ScanActivity.class);
-                intent.putExtra("ID", sendingID);
-                intent.putExtra("ID Length", IDLength);
-                startActivity(intent);
-
             }
         });
 
       signupButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-          makeRequest(username.getText().toString(), password.getText
+          makeRequest(new VolleyCallback() {
+            @Override
+            public void onSuccess(JSONObject result) {
+
+            }
+          },username.getText().toString(), password.getText
               ().toString(), "signup");
         }
       });
     }
 
-  public void makeRequest(String... args) {
+  public void makeRequest(final VolleyCallback callback, String... args) {
     final String username = args[0];
     final String password = args[1];
     final String login = args[2];
@@ -91,8 +97,9 @@ public class MainActivity extends AppCompatActivity {
               JSONObject object = new JSONObject(response);
               Toast.makeText(getApplicationContext(), object.getString
                   ("message"), Toast.LENGTH_LONG).show();
+              callback.onSuccess(object);
             } catch (Exception ex) {
-              System.out.println("woops");
+              System.out.println(ex.toString());
             }
           }
         },
@@ -115,5 +122,9 @@ public class MainActivity extends AppCompatActivity {
       }
     };
     queue.add(postRequest);
+  }
+
+  public interface VolleyCallback{
+    void onSuccess(JSONObject result);
   }
 }
