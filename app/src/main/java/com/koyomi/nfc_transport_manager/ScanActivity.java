@@ -16,7 +16,7 @@ public class ScanActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.scan_layout);
+        setContentView(R.layout.scan_activity);
         //Setting title ID
         Bundle extras = getIntent().getExtras();
         sentID = extras.getString("ID");

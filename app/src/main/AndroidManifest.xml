@@ -27,8 +27,8 @@
             <action android:name="android.nfc.action.TAG_DISCOVERED"/>
             <data android:mimeType="text/plain" />
         </intent-filter>
-
         </activity>
+        <activity android:name=".ProfileActivity"/>
     </application>
 
 </manifest>
