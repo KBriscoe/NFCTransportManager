@@ -20,14 +20,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
+
     productFlavors {
     }
-=======
->>>>>>> 533563f3ac41f8f221f1ca46fb9c6495d3b9cf77
-=======
->>>>>>> 533563f3ac41f8f221f1ca46fb9c6495d3b9cf77
+
 }
 
 dependencies {
