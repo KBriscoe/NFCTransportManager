@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -46,34 +45,38 @@ public class MainActivity extends AppCompatActivity {
         View loginView = findViewById(R.id.loginView);
         View signupView = findViewById(R.id.signupView);
 
-        email = findViewById(R.id.emailField);
-        email = findViewById(R.id.emailField);
-        password = findViewById(R.id.passwordField);
+        email = findViewById(R.id.loginEmailField);
+        password = findViewById(R.id.loginPasswordField);
 
         loginButton = findViewById(R.id.loginButton);
         signupButton = findViewById(R.id.signupButton);
         confirmSignupButton = findViewById(R.id.createButton);
         backButton = findViewById(R.id.backButton);
 
-        loginButton.setOnClickListener(view -> {
-            makeRequest(result -> {
-                try {
-                    if (result.getInt("status") == 200) {
-                        //Populate passID from database
-                        passID = email.getText().toString();
-                        //int IDLength = passID.length();
-                        //String sendingID = passID;
-                        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-                        //intent.putExtra("ID", sendingID);
-                        //intent.putExtra("ID Length", IDLength);
-                        startActivity(intent);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                makeRequest(new VolleyCallback(){
+                @Override
+                public void onSuccess(JSONObject result) {
+                    try {
+                        if (result.getInt("status") == 200) {
+                            //Populate passID from database
+                            //passID = email.getText().toString();
+                            //int IDLength = passID.length();
+                            //String sendingID = passID;
+                            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                            //intent.putExtra("ID", sendingID);
+                            //intent.putExtra("ID Length", IDLength);
+                            startActivity(intent);
+                        }
+                    } catch (Exception ex) {
+                        System.out.println(ex.toString());
                     }
-                } catch (Exception ex) {
-                    System.out.println(ex.toString());
                 }
-
             }, email.getText().toString(), password.getText
                     ().toString(), "login");
+                }
         });
 
         signupButton.setOnClickListener(View -> {
