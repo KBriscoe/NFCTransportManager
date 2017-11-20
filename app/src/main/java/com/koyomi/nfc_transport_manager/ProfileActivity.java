@@ -22,7 +22,7 @@ public class ProfileActivity extends Activity{
         });
 
         settings.setOnClickListener(View ->{
-            Intent intent = new Intent(ProfileActivity.this, ScanActivity.class);
+            Intent intent = new Intent(ProfileActivity.this, SettingsActivity.class);
             startActivity(intent);
         });
     }

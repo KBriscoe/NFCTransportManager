@@ -18,11 +18,11 @@ public class ScanActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scan_activity);
         //Setting title ID
-        Bundle extras = getIntent().getExtras();
-        sentID = extras.getString("ID");
-        int len = extras.getInt("ID Length");
+        //Bundle extras = getIntent().getExtras();
+        //sentID = extras.getString("ID");
+        //int len = extras.getInt("ID Length");
         passText = (TextView)findViewById(R.id.passText);
-        passText.setText(sentID.toCharArray(), 0, len);
+        //passText.setText(sentID.toCharArray(), 0, len);
 
 
         NdefRecord mimeRecord = new NdefRecord(
