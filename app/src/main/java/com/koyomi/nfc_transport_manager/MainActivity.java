@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     Button backButton;
     Context context = this;
 
-    final static String URL = "http://34.239.52.7/index.php";
+    final static String URL = "http://54.165.172.110/index.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,11 +61,11 @@ public class MainActivity extends AppCompatActivity {
                     if (result.getInt("status") == 200) {
                         //Populate passID from database
                         passID = email.getText().toString();
-                        int IDLength = passID.length();
-                        String sendingID = passID;
-                        Intent intent = new Intent(MainActivity.this, ScanActivity.class);
-                        intent.putExtra("ID", sendingID);
-                        intent.putExtra("ID Length", IDLength);
+                        //int IDLength = passID.length();
+                        //String sendingID = passID;
+                        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                        //intent.putExtra("ID", sendingID);
+                        //intent.putExtra("ID Length", IDLength);
                         startActivity(intent);
                     }
                 } catch (Exception ex) {
