@@ -4,11 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-<<<<<<< HEAD
 import android.view.View;
 import android.view.ViewGroup;
-=======
->>>>>>> 533563f3ac41f8f221f1ca46fb9c6495d3b9cf77
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -16,6 +13,8 @@ import android.widget.ViewSwitcher;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -56,35 +55,34 @@ public class MainActivity extends AppCompatActivity {
         confirmSignupButton = findViewById(R.id.createButton);
         backButton = findViewById(R.id.backButton);
 
-<<<<<<< HEAD
         loginButton.setOnClickListener(view -> {
-                makeRequest(result -> {
-                    try {
-                        if (result.getInt("status") == 200) {
-                            //Populate passID from database
-                            passID = email.getText().toString();
-                            int IDLength = passID.length();
-                            String sendingID = passID;
-                            Intent intent = new Intent(MainActivity.this, ScanActivity.class);
-                            intent.putExtra("ID", sendingID);
-                            intent.putExtra("ID Length", IDLength);
-                            startActivity(intent);
-                        }
-                    } catch (Exception ex) {
-                        System.out.println(ex.toString());
+            makeRequest(result -> {
+                try {
+                    if (result.getInt("status") == 200) {
+                        //Populate passID from database
+                        passID = email.getText().toString();
+                        int IDLength = passID.length();
+                        String sendingID = passID;
+                        Intent intent = new Intent(MainActivity.this, ScanActivity.class);
+                        intent.putExtra("ID", sendingID);
+                        intent.putExtra("ID Length", IDLength);
+                        startActivity(intent);
                     }
+                } catch (Exception ex) {
+                    System.out.println(ex.toString());
+                }
 
-                }, email.getText().toString(), password.getText
-                        ().toString(), "login");
+            }, email.getText().toString(), password.getText
+                    ().toString(), "login");
         });
 
         signupButton.setOnClickListener(View -> {
-                if (viewSwitcher.getCurrentView() != loginView){
-                    viewSwitcher.showPrevious();
-                }else if(viewSwitcher.getCurrentView() != signupView){
-                    viewSwitcher.showNext();
+                    if (viewSwitcher.getCurrentView() != loginView){
+                        viewSwitcher.showPrevious();
+                    }else if(viewSwitcher.getCurrentView() != signupView){
+                        viewSwitcher.showNext();
+                    }
                 }
-            }
         );
 
         confirmSignupButton.setOnClickListener(View -> {
@@ -102,43 +100,17 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
-=======
-        loginButton.setOnClickListener(view ->
-                loginRequest(result ->  {
-                        try {
-                            if (result.getInt("status") == 200) {
-                                //Assign correct PassID based on username here
-                                passID = email.getText().toString();
-                                int IDLength = passID.length();
-                                String sendingID = passID;
-                                Intent intent = new Intent(MainActivity.this, ScanActivity.class);
-                                intent.putExtra("ID", sendingID);
-                                intent.putExtra("ID Length", IDLength);
-                                startActivity(intent);
-                            }
-                        } catch (Exception ex) {
-                            System.out.println(ex.toString());
-                        }
-                },email.getText().toString(), password.getText
-                        ().toString(), "login"));
-
-
-        signupButton.setOnClickListener(view ->
-                signupRequest(result -> {
-                  // Do whatever action is wanted after sign up.
-                  System.out.print("hi");
-                  System.out.print("hi");
-                }, email.getText().toString(), password.getText().toString(),
-                    "signup"));
->>>>>>> 533563f3ac41f8f221f1ca46fb9c6495d3b9cf77
     }
 
-    public void loginRequest(final VolleyCallback callback, String... args) {
+    public void makeRequest(final VolleyCallback callback, String... args) {
         final String email = args[0];
         final String password = args[1];
+        final String login = args[2];
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest postRequest = new StringRequest(Request.Method.POST, URL,
-                response -> {
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
                         try {
                             JSONObject object = new JSONObject(response);
                             Toast.makeText(getApplicationContext(), object.getString
@@ -147,61 +119,28 @@ public class MainActivity extends AppCompatActivity {
                         } catch (Exception ex) {
                             System.out.println(ex.toString());
                         }
-                    },
+                    }
+                },
 
-                error ->
-                    Toast.makeText(getApplicationContext(), "Unable to "
-                        + " retrieve any data from server", Toast.LENGTH_LONG)
-                        .show()
-
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Unable to retrieve any data from server", Toast.LENGTH_LONG).show();
+                    }
+                }
         ) {
             @Override
             protected Map<String, String> getParams() {
-                    Map<String, String>  params = new HashMap<>();
-                    params.put("email", email);
-                    params.put("password", password);
-                    return params;
+                Map<String, String>  params = new HashMap<>();
+                params.put("email", email);
+                params.put("password", password);
+                params.put("login", login);
+
+                return params;
             }
         };
         queue.add(postRequest);
     }
-
-  public void signupRequest(final VolleyCallback callback, String... args) {
-    final String email = args[0];
-    final String password = args[1];
-    final String fname = args[2];
-    final String lname = args[3];
-    RequestQueue queue = Volley.newRequestQueue(context);
-    StringRequest postRequest = new StringRequest(Request.Method.POST, URL,
-        response -> {
-          try {
-            JSONObject object = new JSONObject(response);
-            Toast.makeText(getApplicationContext(), object.getString
-                ("message"), Toast.LENGTH_LONG).show();
-            callback.onSuccess(object);
-          } catch (Exception ex) {
-            System.out.println(ex.toString());
-          }
-        },
-
-        error ->
-            Toast.makeText(getApplicationContext(), "Unable to "
-                + " retrieve any data from server", Toast.LENGTH_LONG)
-                .show()
-
-    ) {
-      @Override
-      protected Map<String, String> getParams() {
-        Map<String, String>  params = new HashMap<>();
-        params.put("email", email);
-        params.put("password", password);
-        params.put("fname", fname);
-        params.put("lname", lname);
-        return params;
-      }
-    };
-    queue.add(postRequest);
-  }
 
     public interface VolleyCallback{
         void onSuccess(JSONObject result);
