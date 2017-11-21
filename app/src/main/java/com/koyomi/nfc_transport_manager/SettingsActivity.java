@@ -32,11 +32,14 @@ public class SettingsActivity extends Activity {
         setContentView(R.layout.settings_activity);
 
         Intent intent = getIntent();
+        passIDText.setText(intent.getStringExtra("ID"));
 
         getUserInfo(result -> {
             try {
                 if (result.getInt("status") == 200) {
-
+                    emailField.setText(result.getString("email"));
+                    fnameField.setText(result.getString("fname"));
+                    lnameField.setText(result.getString("lname"));
                 }
             } catch (Exception ex) {
                 System.out.println(ex.toString());
@@ -51,11 +54,6 @@ public class SettingsActivity extends Activity {
                 response -> {
                     try {
                         JSONObject object = new JSONObject(response);
-                        if (object.getInt("status") == 200) {
-                            emailField.setText(object.getString("email"));
-                            fnameField.setText(object.getString("fname"));
-                            lnameField.setText(object.getString("lname"));
-                        }
                         callback.onSuccess(object);
                     } catch (Exception ex) {
                         System.out.println(ex.toString());
