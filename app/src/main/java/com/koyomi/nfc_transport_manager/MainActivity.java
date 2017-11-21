@@ -62,12 +62,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         if (result.getInt("status") == 200) {
                             //Populate passID from database
-                            //passID = email.getText().toString();
-                            //int IDLength = passID.length();
-                            //String sendingID = passID;
                             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-                            //intent.putExtra("ID", sendingID);
-                            //intent.putExtra("ID Length", IDLength);
                             startActivity(intent);
                         }
                     } catch (Exception ex) {

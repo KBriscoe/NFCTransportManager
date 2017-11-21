@@ -18,6 +18,11 @@ public class ProfileActivity extends Activity{
 
         scanMode.setOnClickListener(View -> {
             Intent intent = new Intent(ProfileActivity.this, ScanActivity.class);
+            //passID = email.getText().toString();
+            //int IDLength = passID.length();
+            //String sendingID = passID;
+            //intent.putExtra("ID", sendingID);
+            //intent.putExtra("ID Length", IDLength);
             startActivity(intent);
         });
 
