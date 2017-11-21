@@ -19,16 +19,16 @@ import java.util.Map;
 
 public class SettingsActivity extends Activity {
 
-    TextView passIDText = findViewById(R.id.IDVALUE);
-    EditText fnameField = findViewById(R.id.settingsFNameField);
-    EditText lnameField = findViewById(R.id.settingsLNameField);
-    EditText emailField = findViewById(R.id.settingsEmailField);
     Context context = this;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
+        TextView passIDText = (TextView)findViewById(R.id.IDVALUE);
+        EditText fnameField = findViewById(R.id.settingsFNameField);
+        EditText lnameField = findViewById(R.id.settingsLNameField);
+        EditText emailField = findViewById(R.id.settingsEmailField);
 
         Bundle extras = getIntent().getExtras();
         String id = extras.getString("ID");
