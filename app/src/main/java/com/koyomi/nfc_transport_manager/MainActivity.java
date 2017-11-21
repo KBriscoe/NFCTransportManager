@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
         View loginView = findViewById(R.id.loginView);
         View signupView = findViewById(R.id.signupView);
 
-        loginEmail = findViewById(R.id.emailField);
-        loginPassword = findViewById(R.id.passwordField);
+        loginEmail = findViewById(R.id.loginEmailField);
+        loginPassword = findViewById(R.id.loginPasswordField);
 
         loginButton = findViewById(R.id.loginButton);
         switchToSignup = findViewById(R.id.signupButton);
