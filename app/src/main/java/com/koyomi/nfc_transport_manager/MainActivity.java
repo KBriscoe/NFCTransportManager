@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         switchToSignup.setOnClickListener(View -> {
                     if (viewSwitcher.getCurrentView() != loginView) {
                         viewSwitcher.showPrevious();
-                    } else if (viewSwitcher.getCurrentView() != signupView) {
+                    }else if (viewSwitcher.getCurrentView() != signupView) {
                         viewSwitcher.showNext();
                     }
                 }

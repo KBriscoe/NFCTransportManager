@@ -2,10 +2,13 @@ package com.koyomi.nfc_transport_manager;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Context;
+import android.widget.ViewSwitcher;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -18,7 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SettingsActivity extends Activity {
-
     Context context = this;
 
     @Override
@@ -29,6 +31,12 @@ public class SettingsActivity extends Activity {
         EditText fnameField = findViewById(R.id.settingsFNameField);
         EditText lnameField = findViewById(R.id.settingsLNameField);
         EditText emailField = findViewById(R.id.settingsEmailField);
+
+        ViewSwitcher settingsSwitcher = findViewById(R.id.settingsSwitcher);
+        View mainSettingView = findViewById(R.id.mainSettingView);
+        View updatePassIDView = findViewById(R.id.updatePassIDView);
+        Button switchToUpdateID = findViewById(R.id.updatePassIDButton);
+        Button switchToSettings = findViewById(R.id.IDPageBackButton);
 
         Bundle extras = getIntent().getExtras();
         String id = extras.getString("ID");
@@ -45,6 +53,22 @@ public class SettingsActivity extends Activity {
                 System.out.println(ex.toString());
             }
         }, extras.getString("ID"));
+
+        switchToUpdateID.setOnClickListener(View -> {
+            if (settingsSwitcher.getCurrentView() != mainSettingView) {
+                settingsSwitcher.showPrevious();
+            }else if (settingsSwitcher.getCurrentView() != updatePassIDView) {
+                settingsSwitcher.showNext();
+            }
+        });
+
+        switchToSettings.setOnClickListener(View -> {
+            if (settingsSwitcher.getCurrentView() != updatePassIDView) {
+                settingsSwitcher.showNext();
+            }else if (settingsSwitcher.getCurrentView() != mainSettingView) {
+                settingsSwitcher.showPrevious();
+            }
+        });
     }
 
     public void getUserInfo(final MainActivity.VolleyCallback callback, String... args) {
