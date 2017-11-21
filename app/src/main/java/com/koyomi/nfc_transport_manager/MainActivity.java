@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 loginRequest(result -> {
                     try {
                         if (result.getInt("status") == 200) {
-                            switchToProfile();
+                            switchToProfile(loginEmail.getText().toString());
                         }
                     } catch (Exception ex) {
                         System.out.println(ex.toString());
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         confirmSignupButton.setOnClickListener(view ->
                 signupRequest(result -> {
                     try {
-                        switchToProfile();
+                        switchToProfile(signupEmail.getText().toString());
                     } catch (Exception ex) {
                         System.out.println(ex.toString());
                     }
@@ -97,13 +97,46 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    public void switchToProfile() {
-        passID = "0";
-        IDLength = passID.length();
-        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-        intent.putExtra("ID", passID);
-        intent.putExtra("ID Length", IDLength);
-        startActivity(intent);
+    public void switchToProfile(String email) {
+        signupRequest(result -> {
+                    try {
+                        String id = result.getString("id");
+                        IDLength = passID.length();
+                        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                        intent.putExtra("ID", passID);
+                        startActivity(intent);
+                    } catch (Exception ex) {
+                        System.out.println(ex.toString());
+                    }
+                }, email);
+    }
+
+    public void getPassID(final VolleyCallback callback, String... args) {
+        final String id = args[0];
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest postRequest = new StringRequest(Request.Method.POST, URL,
+                response -> {
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        Toast.makeText(getApplicationContext(), object.getString
+                                ("message"), Toast.LENGTH_LONG).show();
+                        callback.onSuccess(object);
+                    } catch (Exception ex) {
+                        System.out.println(ex.toString());
+                    }
+                },
+
+                error -> Toast.makeText(getApplicationContext(),
+                        "Unable to retrieve any data from server", Toast.LENGTH_LONG).show()
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("id", id);
+                return params;
+            }
+        };
+        queue.add(postRequest);
     }
 
     public void loginRequest(final VolleyCallback callback, String... args) {

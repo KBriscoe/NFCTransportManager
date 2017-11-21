@@ -6,7 +6,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Context;
-import android.content.Intent;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -33,7 +32,7 @@ public class SettingsActivity extends Activity {
 
         Bundle extras = getIntent().getExtras();
         String id = extras.getString("ID");
-        passIDText.setText(id.toCharArray(), 0, id.length());
+        passIDText.setText(id.toCharArray(), 0, id.toCharArray().length);
 
         getUserInfo(result -> {
             try {

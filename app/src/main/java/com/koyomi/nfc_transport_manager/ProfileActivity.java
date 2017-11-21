@@ -16,9 +16,8 @@ public class ProfileActivity extends Activity{
         scanMode = findViewById(R.id.scanButton);
         settings = findViewById(R.id.settingsButton);
 
-        Intent prevIntent = getIntent();
-        String passID = prevIntent.getStringExtra("ID");
-        int IDLength = prevIntent.getIntExtra("ID Length", 0);
+        Bundle extras = getIntent().getExtras();
+        String id = extras.getString("ID");
 
         scanMode.setOnClickListener(View -> {
             Intent intent = new Intent(ProfileActivity.this, ScanActivity.class);
@@ -27,8 +26,7 @@ public class ProfileActivity extends Activity{
 
         settings.setOnClickListener(View ->{
             Intent intent = new Intent(ProfileActivity.this, SettingsActivity.class);
-            intent.putExtra("ID", passID);
-            intent.putExtra("ID Length", IDLength);
+            intent.putExtra("ID", id);
             startActivity(intent);
         });
     }
