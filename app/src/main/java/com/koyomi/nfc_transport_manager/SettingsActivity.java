@@ -31,8 +31,8 @@ public class SettingsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
 
-        Intent intent = getIntent();
-        String id = intent.getStringExtra("ID");
+        Bundle extras = getIntent().getExtras();
+        String id = extras.getString("ID");
         passIDText.setText(id.toCharArray(), 0, id.length());
 
         getUserInfo(result -> {
@@ -45,7 +45,7 @@ public class SettingsActivity extends Activity {
             } catch (Exception ex) {
                 System.out.println(ex.toString());
             }
-        }, intent.getStringExtra("ID"));
+        }, extras.getString("ID"));
     }
 
     public void getUserInfo(final MainActivity.VolleyCallback callback, String... args) {
