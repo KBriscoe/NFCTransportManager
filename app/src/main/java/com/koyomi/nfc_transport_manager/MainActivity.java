@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("email", email);
+                params.put("request", "getID");
                 return params;
             }
         };
@@ -160,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("email", email);
                 params.put("password", password);
+                params.put("request", "login");
                 return params;
             }
         };
@@ -194,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
                 params.put("password", password);
                 params.put("fname", fname);
                 params.put("lname", lname);
+                params.put("request", "register");
                 return params;
             }
         };
