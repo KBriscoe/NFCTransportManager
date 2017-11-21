@@ -98,12 +98,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void switchToProfile(String email) {
-        signupRequest(result -> {
+        getPassID(result -> {
                     try {
                         String id = result.getString("id");
-                        IDLength = passID.length();
                         Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-                        intent.putExtra("ID", passID);
+                        intent.putExtra("ID", id);
                         startActivity(intent);
                     } catch (Exception ex) {
                         System.out.println(ex.toString());
@@ -112,14 +111,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getPassID(final VolleyCallback callback, String... args) {
-        final String id = args[0];
+        final String email = args[0];
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest postRequest = new StringRequest(Request.Method.POST, URL,
                 response -> {
                     try {
                         JSONObject object = new JSONObject(response);
-                        Toast.makeText(getApplicationContext(), object.getString
-                                ("message"), Toast.LENGTH_LONG).show();
                         callback.onSuccess(object);
                     } catch (Exception ex) {
                         System.out.println(ex.toString());
@@ -132,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("id", id);
+                params.put("email", email);
                 return params;
             }
         };
