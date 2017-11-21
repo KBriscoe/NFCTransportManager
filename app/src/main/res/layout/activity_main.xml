@@ -26,7 +26,6 @@
             tools:context="com.koyomi.nfc_transport_manager.MainActivity"
             tools:layout_editor_absoluteY="25dp">
 
-
             <TextView
                 android:id="@+id/titleText"
                 android:layout_width="wrap_content"
