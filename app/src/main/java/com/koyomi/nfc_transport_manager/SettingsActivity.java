@@ -32,7 +32,8 @@ public class SettingsActivity extends Activity {
         setContentView(R.layout.settings_activity);
 
         Intent intent = getIntent();
-        passIDText.setText(intent.getStringExtra("ID"));
+        String id = intent.getStringExtra("ID");
+        passIDText.setText(id.toCharArray(), 0, id.length());
 
         getUserInfo(result -> {
             try {
