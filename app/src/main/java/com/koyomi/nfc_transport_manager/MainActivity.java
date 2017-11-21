@@ -36,8 +36,7 @@ public class MainActivity extends AppCompatActivity {
     Button backButton;
     Context context = this;
 
-    final static String URL = "http://ec2-54-165-172-110.compute-1.amazonaws.com/index.php";
-
+    final static String URL = "http://54.165.172.110/index.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,9 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 loginRequest(result -> {
                     try {
                         if (result.getInt("status") == 200) {
-//                            passID = result.getString("id");
-//                            IDLength = passID.length();
-                            switchToScanActivity();
+                            switchToProfile();
                         }
                     } catch (Exception ex) {
                         System.out.println(ex.toString());
@@ -83,9 +80,7 @@ public class MainActivity extends AppCompatActivity {
         confirmSignupButton.setOnClickListener(view ->
                 signupRequest(result -> {
                     try {
-//                        passID = result.getString("id");
-//                        IDLength = passID.length();
-                        switchToScanActivity();
+                        switchToProfile();
                     } catch (Exception ex) {
                         System.out.println(ex.toString());
                     }
@@ -102,8 +97,10 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    private void switchToScanActivity() {
-        Intent intent = new Intent(MainActivity.this, ScanActivity.class);
+    public void switchToProfile() {
+        passID = "0";
+        IDLength = passID.length();
+        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
         intent.putExtra("ID", passID);
         intent.putExtra("ID Length", IDLength);
         startActivity(intent);
