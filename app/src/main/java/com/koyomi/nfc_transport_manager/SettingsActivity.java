@@ -114,30 +114,46 @@ public class SettingsActivity extends Activity {
     public void updateID(final MainActivity.VolleyCallback callback, String... args) {
         final String email = args[0];
         final String id = args[1];
-        RequestQueue queue = Volley.newRequestQueue(context);
-        StringRequest postRequest = new StringRequest(Request.Method.POST, MainActivity.URL,
-                response -> {
-                    try {
-                        JSONObject object = new JSONObject(response);
-                        callback.onSuccess(object);
-                    } catch (Exception ex) {
-                        System.out.println(ex.toString());
-                    }
-                },
 
-                error -> Toast.makeText(getApplicationContext(),
-                        "Unable to retrieve any data from server", Toast.LENGTH_LONG).show()
-        ) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("email", email);
-                params.put("id", id);
-                params.put("request", "updateID");
-                return params;
+        if (id.length() == 19) {
+            String[] array = id.split("-");
+            boolean isAlphaNumeric = true;
+            for (String element : array) {
+                for (Character c : element.toCharArray()) {
+                    if(!Character.isLetterOrDigit(c)) {
+                        isAlphaNumeric = false;
+                        break;
+                    }
+                }
             }
-        };
-        queue.add(postRequest);
+
+            if (isAlphaNumeric) {
+                RequestQueue queue = Volley.newRequestQueue(context);
+                StringRequest postRequest = new StringRequest(Request.Method.POST, MainActivity.URL,
+                        response -> {
+                            try {
+                                JSONObject object = new JSONObject(response);
+                                callback.onSuccess(object);
+                            } catch (Exception ex) {
+                                System.out.println(ex.toString());
+                            }
+                        },
+
+                        error -> Toast.makeText(getApplicationContext(),
+                                "Unable to retrieve any data from server", Toast.LENGTH_LONG).show()
+                ) {
+                    @Override
+                    protected Map<String, String> getParams() {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("email", email);
+                        params.put("id", id);
+                        params.put("request", "updateID");
+                        return params;
+                    }
+                };
+                queue.add(postRequest);
+            }
+        }
     }
 
     public void updateUserInfo(final MainActivity.VolleyCallback callback, String... args) {
