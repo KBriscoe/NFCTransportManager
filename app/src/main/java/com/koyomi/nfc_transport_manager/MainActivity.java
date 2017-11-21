@@ -49,57 +49,27 @@ public class MainActivity extends AppCompatActivity {
         View loginView = findViewById(R.id.loginView);
         View signupView = findViewById(R.id.signupView);
 
-<<<<<<< HEAD
-        email = findViewById(R.id.loginEmailField);
-        password = findViewById(R.id.loginPasswordField);
-=======
         loginEmail = findViewById(R.id.loginEmailField);
         loginPassword = findViewById(R.id.loginPasswordField);
->>>>>>> Tyler
 
         loginButton = findViewById(R.id.loginButton);
         switchToSignup = findViewById(R.id.signupButton);
         confirmSignupButton = findViewById(R.id.createButton);
         backButton = findViewById(R.id.backButton);
 
-<<<<<<< HEAD
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                makeRequest(new VolleyCallback(){
-                @Override
-                public void onSuccess(JSONObject result) {
-                    try {
-                        if (result.getInt("status") == 200) {
-                            //Populate passID from database
-                            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-                            startActivity(intent);
-=======
         loginButton.setOnClickListener(view ->
                 loginRequest(result -> {
                     try {
                         if (result.getInt("status") == 200) {
                             switchToProfile(loginEmail.getText().toString());
->>>>>>> Tyler
                         }
                     } catch (Exception ex) {
                         System.out.println(ex.toString());
                     }
-<<<<<<< HEAD
-                }
-            }, email.getText().toString(), password.getText
-                    ().toString(), "login");
-                }
-        });
-
-        signupButton.setOnClickListener(View -> {
-                    if (viewSwitcher.getCurrentView() != loginView){
-=======
                 }, loginEmail.getText().toString(), loginPassword.getText().toString()));
 
         switchToSignup.setOnClickListener(View -> {
                     if (viewSwitcher.getCurrentView() != loginView) {
->>>>>>> Tyler
                         viewSwitcher.showPrevious();
                     } else if (viewSwitcher.getCurrentView() != signupView) {
                         viewSwitcher.showNext();

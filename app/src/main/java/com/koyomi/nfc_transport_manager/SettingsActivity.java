@@ -2,10 +2,6 @@ package com.koyomi.nfc_transport_manager;
 
 import android.app.Activity;
 import android.os.Bundle;
-<<<<<<< HEAD
-
-public class SettingsActivity extends Activity {
-=======
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,13 +21,10 @@ public class SettingsActivity extends Activity {
 
     Context context = this;
 
->>>>>>> Tyler
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
-<<<<<<< HEAD
-=======
         TextView passIDText = (TextView)findViewById(R.id.IDVALUE);
         EditText fnameField = findViewById(R.id.settingsFNameField);
         EditText lnameField = findViewById(R.id.settingsLNameField);
@@ -78,6 +71,5 @@ public class SettingsActivity extends Activity {
             }
         };
         queue.add(postRequest);
->>>>>>> Tyler
     }
 }

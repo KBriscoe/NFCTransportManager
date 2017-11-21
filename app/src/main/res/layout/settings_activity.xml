@@ -32,17 +32,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:text="Update PassID"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/passIDText" />
 
             <TextView
                 android:id="@+id/passIDText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="8dp"
                 android:text="Pass ID:"
                 android:textSize="20dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -54,10 +54,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="20dp"
-<<<<<<< HEAD
-                android:text="Null"
-=======
->>>>>>> Tyler
                 android:textSize="20dp"
                 app:layout_constraintStart_toEndOf="@+id/passIDText"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -67,30 +63,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="35dp"
+                android:layout_marginTop="25dp"
                 android:text="First Name:"
                 android:textSize="18dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/passIDText" />
+                app:layout_constraintTop_toBottomOf="@+id/updatePassIDButton" />
 
             <EditText
                 android:id="@+id/settingsFNameField"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="42dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="15dp"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text="Null"
                 app:layout_constraintStart_toEndOf="@+id/settingsFNameText"
-                app:layout_constraintTop_toBottomOf="@+id/passIDText" />
+                app:layout_constraintTop_toBottomOf="@+id/updatePassIDButton" />
 
             <TextView
                 android:id="@+id/settingsLNameText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="35dp"
+                android:layout_marginTop="25dp"
                 android:text="Last Name:"
                 android:textSize="18dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -101,19 +97,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="8dp"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text="Null"
                 app:layout_constraintStart_toEndOf="@+id/settingsLNameText"
-                app:layout_constraintTop_toBottomOf="@+id/settingsFNameText" />
+                app:layout_constraintTop_toBottomOf="@+id/settingsFNameField" />
 
             <TextView
                 android:id="@+id/settingsEmailText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="50dp"
-                android:layout_marginTop="35dp"
+                android:layout_marginTop="30dp"
                 android:text="Email:"
                 android:textSize="18dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -124,19 +120,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="8dp"
                 android:ems="10"
                 android:inputType="textEmailAddress"
                 android:text="Null"
                 app:layout_constraintStart_toEndOf="@+id/settingsEmailText"
-                app:layout_constraintTop_toBottomOf="@+id/settingsLNameText" />
+                app:layout_constraintTop_toBottomOf="@+id/settingsLNameField" />
 
             <TextView
                 android:id="@+id/settingsPasswordText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="35dp"
+                android:layout_marginTop="30dp"
                 android:text="Password:"
                 android:textSize="18dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -147,11 +143,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="46dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="8dp"
                 android:ems="10"
                 android:inputType="textPassword"
                 app:layout_constraintStart_toEndOf="@+id/settingsPasswordText"
-                app:layout_constraintTop_toBottomOf="@+id/settingsEmailText" />
+                app:layout_constraintTop_toBottomOf="@+id/settingsEmailField" />
 
             <Button
                 android:id="@+id/settingsUpdateButton"
