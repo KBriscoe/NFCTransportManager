@@ -61,15 +61,15 @@ public class SettingsActivity extends Activity {
 
         updateID.setOnClickListener(view -> {
             updateID(result -> {
-                        try {
-                            if (result.getInt("status") == 200) {
-                                passIDText.setText(result.getString("id").toCharArray(), 0,
-                                        result.getString("id").toCharArray().length);
-                            }
-                        } catch (Exception ex) {
-                            System.out.println(ex.toString());
-                        }
-                    }, emailField.getText().toString(), passIDField.getText().toString());
+                try {
+                    if (result.getInt("status") == 200) {
+                        passIDText.setText(result.getString("id").toCharArray(), 0,
+                                result.getString("id").toCharArray().length);
+                    }
+                } catch (Exception ex) {
+                    System.out.println(ex.toString());
+                }
+            }, emailField.getText().toString(), passIDField.getText().toString());
         });
 
         Bundle extras = getIntent().getExtras();
@@ -115,45 +115,47 @@ public class SettingsActivity extends Activity {
         final String email = args[0];
         final String id = args[1];
 
+        if (checkValidID(id)) {
+            RequestQueue queue = Volley.newRequestQueue(context);
+            StringRequest postRequest = new StringRequest(Request.Method.POST, MainActivity.URL,
+                    response -> {
+                        try {
+                            JSONObject object = new JSONObject(response);
+                            callback.onSuccess(object);
+                        } catch (Exception ex) {
+                            System.out.println(ex.toString());
+                        }
+                    },
+
+                    error -> Toast.makeText(getApplicationContext(),
+                            "Unable to retrieve any data from server", Toast.LENGTH_LONG).show()
+            ) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("email", email);
+                    params.put("id", id);
+                    params.put("request", "updateID");
+                    return params;
+                }
+            };
+            queue.add(postRequest);
+        }
+    }
+
+
+    private boolean checkValidID(String id) {
         if (id.length() == 19) {
             String[] array = id.split("-");
-            boolean isAlphaNumeric = true;
             for (String element : array) {
                 for (Character c : element.toCharArray()) {
-                    if(!Character.isLetterOrDigit(c)) {
-                        isAlphaNumeric = false;
-                        break;
+                    if (!Character.isLetterOrDigit(c)) {
+                        return false;
                     }
                 }
             }
-
-            if (isAlphaNumeric) {
-                RequestQueue queue = Volley.newRequestQueue(context);
-                StringRequest postRequest = new StringRequest(Request.Method.POST, MainActivity.URL,
-                        response -> {
-                            try {
-                                JSONObject object = new JSONObject(response);
-                                callback.onSuccess(object);
-                            } catch (Exception ex) {
-                                System.out.println(ex.toString());
-                            }
-                        },
-
-                        error -> Toast.makeText(getApplicationContext(),
-                                "Unable to retrieve any data from server", Toast.LENGTH_LONG).show()
-                ) {
-                    @Override
-                    protected Map<String, String> getParams() {
-                        Map<String, String> params = new HashMap<>();
-                        params.put("email", email);
-                        params.put("id", id);
-                        params.put("request", "updateID");
-                        return params;
-                    }
-                };
-                queue.add(postRequest);
-            }
         }
+        return true;
     }
 
     public void updateUserInfo(final MainActivity.VolleyCallback callback, String... args) {
