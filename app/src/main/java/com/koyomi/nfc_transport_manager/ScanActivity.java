@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
+import java.util.Locale;
 
 public class ScanActivity extends Activity {
 
@@ -50,10 +51,28 @@ public class ScanActivity extends Activity {
         NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (nfcAdapter == null) return; // NFC not available on this device
         String message = extras.getString("ID");
-        NdefRecord ndefRecord = NdefRecord.createMime("text/plain", message.getBytes());
+        // Possibly very simple way.
+        NdefRecord ndefRecord = NdefRecord.createMime("text/plain", message.getBytes(Charset.forName("US-ASCII")));
+        // More complex way that some dude on stack overflow said worked.
+//        NdefRecord ndefRecord = createTextRecord(message, Locale.getDefault(), true);
         NdefMessage ndefMessage = new NdefMessage(ndefRecord);
         nfcAdapter.setNdefPushMessage(ndefMessage, this);
 
+    }
+
+    public static NdefRecord createTextRecord(String payload, Locale locale, boolean encodeInUtf8) {
+        byte[] langBytes = locale.getLanguage().getBytes(Charset.forName("US-ASCII"));
+        Charset utfEncoding = encodeInUtf8 ? Charset.forName("UTF-8") : Charset.forName("UTF-16");
+        byte[] textBytes = payload.getBytes(utfEncoding);
+        int utfBit = encodeInUtf8 ? 0 : (1 << 7);
+        char status = (char) (utfBit + langBytes.length);
+        byte[] data = new byte[1 + langBytes.length + textBytes.length];
+        data[0] = (byte) status;
+        System.arraycopy(langBytes, 0, data, 1, langBytes.length);
+        System.arraycopy(textBytes, 0, data, 1 + langBytes.length, textBytes.length);
+        NdefRecord record = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
+                NdefRecord.RTD_TEXT, new byte[0], data);
+        return record;
     }
 
 //    class FileUriCallback implements NfcAdapter.CreateBeamUrisCallback {
