@@ -27,7 +27,7 @@ public class SettingsActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
-        TextView passIDText = (TextView) findViewById(R.id.IDVALUE);
+        TextView passIDText = findViewById(R.id.IDVALUE);
         EditText fnameField = findViewById(R.id.settingsFNameField);
         EditText lnameField = findViewById(R.id.settingsLNameField);
         EditText emailField = findViewById(R.id.settingsEmailField);
@@ -43,7 +43,7 @@ public class SettingsActivity extends Activity {
         Button updateInfo = findViewById(R.id.settingsUpdateButton);
         Button updateID = findViewById(R.id.updateIDButton);
 
-        updateInfo.setOnClickListener(view -> {
+        updateInfo.setOnClickListener(view ->
             updateUserInfo(result -> {
                         try {
                             if (result.getInt("status") == 200) {
@@ -56,29 +56,30 @@ public class SettingsActivity extends Activity {
                             System.out.println(ex.toString());
                         }
                     }, emailField.getText().toString(), passwordField.getText().toString(),
-                    fnameField.getText().toString(), lnameField.getText().toString());
-        });
+                    fnameField.getText().toString(), lnameField.getText().toString())
+        );
 
-        updateID.setOnClickListener(view -> {
+        updateID.setOnClickListener(view ->
             updateID(result -> {
                 try {
                     if (result.getInt("status") == 200) {
-                        passIDText.setText(result.getString("id").toCharArray(), 0,
-                                result.getString("id").toCharArray().length);
+                        String newID = result.getString("id");
+                        passIDText.setText(newID);
+                        MainActivity.PASS_ID = newID;
+                        Toast.makeText(getApplicationContext(), "Pass ID"
+                                + " updated successfully", Toast.LENGTH_LONG)
+                                .show();
                     }
                 } catch (Exception ex) {
                     System.out.println(ex.toString());
                 }
-            }, emailField.getText().toString(), passIDField.getText().toString());
-        });
+            }, emailField.getText().toString(), passIDField.getText().toString())
+        );
 
-        Bundle extras = getIntent().getExtras();
-        String id = extras.getString("ID");
+        String id = MainActivity.PASS_ID;
         passIDText.setText(id.toCharArray(), 0, id.toCharArray().length);
 
-        getUserInfo(result ->
-
-        {
+        getUserInfo(result -> {
             try {
                 if (result.getInt("status") == 200) {
                     emailField.setText(result.getString("email"));
@@ -88,7 +89,7 @@ public class SettingsActivity extends Activity {
             } catch (Exception ex) {
                 System.out.println(ex.toString());
             }
-        }, extras.getString("ID"));
+        }, MainActivity.PASS_ID);
 
         switchToUpdateID.setOnClickListener(View ->
 
@@ -143,17 +144,30 @@ public class SettingsActivity extends Activity {
         }
     }
 
-
     private boolean checkValidID(String id) {
-        if (id.length() == 19) {
-            String[] array = id.split("-");
+        String[] array = id.split("-");
+        if (array.length == 4) {
             for (String element : array) {
-                for (Character c : element.toCharArray()) {
-                    if (!Character.isLetterOrDigit(c)) {
-                        return false;
+                if (element.length() == 4) {
+                    for (Character c : element.toCharArray()) {
+                        if (!Character.isLetterOrDigit(c)) {
+                            Toast.makeText(getApplicationContext(), "Not all"
+                                    + " characters are alphanumeric", Toast
+                                    .LENGTH_LONG).show();
+                            return false;
+                        }
                     }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Not enough"
+                            + " characters in: " + element, Toast.LENGTH_LONG)
+                            .show();
+                    return false;
                 }
             }
+        } else {
+            Toast.makeText(getApplicationContext(), "Pass ID does not have 4"
+                    + " sections", Toast.LENGTH_LONG).show();
+            return false;
         }
         return true;
     }

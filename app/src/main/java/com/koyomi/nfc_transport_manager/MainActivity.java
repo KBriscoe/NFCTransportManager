@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     Context context = this;
 
     final static String URL = "http://54.165.172.110/index.php";
+    public static String PASS_ID = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         getPassID(result -> {
                     try {
                         String id = result.getString("id");
+                        PASS_ID = id;
                         Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                         intent.putExtra("ID", id);
                         startActivity(intent);
