@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
     Button backButton;
     Context context = this;
 
-    final static String URL = "http://54.165.172.110/index.php";
+    final static String URL = "http://10.0.0.92/index.php";
+    public static String PASS_ID = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
 
         loginEmail = findViewById(R.id.loginEmailField);
         loginPassword = findViewById(R.id.loginPasswordField);
+
+        signupFirstName = findViewById(R.id.firstNameField);
+        signupLastName = findViewById(R.id.lastNameField);
+        signupEmail = findViewById(R.id.emailField);
+        signupPassword = findViewById(R.id.passwordField);
 
         loginButton = findViewById(R.id.loginButton);
         switchToSignup = findViewById(R.id.signupButton);
@@ -79,12 +85,12 @@ public class MainActivity extends AppCompatActivity {
 
         confirmSignupButton.setOnClickListener(view ->
                 signupRequest(result -> {
-                    try {
-                        switchToProfile(signupEmail.getText().toString());
-                    } catch (Exception ex) {
-                        System.out.println(ex.toString());
-                    }
-                }, signupEmail.getText().toString(), signupPassword.getText().toString(),
+                            try {
+                                switchToProfile(signupEmail.getText().toString());
+                            } catch (Exception ex) {
+                                System.out.println(ex.toString());
+                            }
+                        }, signupEmail.getText().toString(), signupPassword.getText().toString(),
                         signupFirstName.getText().toString(), signupLastName.getText().toString()));
 
         backButton.setOnClickListener(View -> {
@@ -99,15 +105,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void switchToProfile(String email) {
         getPassID(result -> {
-                    try {
-                        String id = result.getString("id");
-                        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-                        intent.putExtra("ID", id);
-                        startActivity(intent);
-                    } catch (Exception ex) {
-                        System.out.println(ex.toString());
-                    }
-                }, email);
+            try {
+                String id = result.getString("id");
+                PASS_ID = id;
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                intent.putExtra("ID", id);
+                startActivity(intent);
+            } catch (Exception ex) {
+                System.out.println(ex.toString());
+            }
+        }, email);
     }
 
     public void getPassID(final VolleyCallback callback, String... args) {
@@ -130,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("email", email);
+                params.put("request", "getID");
                 return params;
             }
         };
@@ -160,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("email", email);
                 params.put("password", password);
+                params.put("request", "login");
                 return params;
             }
         };
@@ -194,10 +203,20 @@ public class MainActivity extends AppCompatActivity {
                 params.put("password", password);
                 params.put("fname", fname);
                 params.put("lname", lname);
+                params.put("request", "register");
                 return params;
             }
         };
         queue.add(postRequest);
+        loginRequest(result -> {
+            try {
+                if (result.getInt("status") == 200) {
+                    switchToProfile(signupEmail.getText().toString());
+                }
+            } catch (Exception ex) {
+                System.out.println(ex.toString());
+            }
+        }, signupEmail.getText().toString(), signupPassword.getText().toString());
     }
 
     public interface VolleyCallback {
