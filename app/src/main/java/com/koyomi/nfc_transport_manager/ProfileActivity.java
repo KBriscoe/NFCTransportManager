@@ -21,6 +21,7 @@ public class ProfileActivity extends Activity{
 
         scanMode.setOnClickListener(View -> {
             Intent intent = new Intent(ProfileActivity.this, ScanActivity.class);
+            intent.putExtra("ID", id);
             startActivity(intent);
         });
 
